@@ -1,13 +1,13 @@
-import { Account } from "../../../../src/domain/models/account";
-import { AccountRepository } from "../../../../src/domain/interfaces/repositories/account-repository";
-import { CreateAccount } from "../../../../src/domain/use-cases/account/create-account";
+import { Account } from "../../../../src/v1/domain/models/account";
+import { AccountRepository } from "../../../../src/v1/domain/interfaces/repositories/account-repository";
+import { CreateAccount } from "../../../../src/v1/domain/use-cases/account/create-account";
 
 describe("Create Account Use Case", () => {
   class MockAccountRepository implements AccountRepository {
-    createAccount(account: Account): Promise<Account> {
+    createAccount(): Promise<void> {
       throw new Error("Method not implemented.");
     }
-    getAccounts(accountIds: string[]): Promise<Account[]> {
+    getAccounts(): Promise<Account[]> {
       throw new Error("Method not implemented.");
     }
   }
@@ -39,11 +39,11 @@ describe("Create Account Use Case", () => {
 
     jest
       .spyOn(mockAccountRepository, "createAccount")
-      .mockImplementation(() => Promise.resolve(account));
+      .mockImplementation(() => Promise.resolve());
 
     const createAccountUse = new CreateAccount(mockAccountRepository);
-    const result = await createAccountUse.execute(inputData);
+    await createAccountUse.execute(inputData);
 
-    expect(result).toStrictEqual(expectedResult);
+    expect(mockAccountRepository.createAccount).toHaveBeenCalledWith(expectedResult);
   });
 });

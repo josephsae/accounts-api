@@ -1,23 +1,24 @@
 import request from "supertest";
-import { Account } from "../../../src/domain/models/account";
-import { CreateAccountUseCase } from "../../../src/domain/interfaces/use-cases/account/create-account-use-case";
-import { GetAccountsUseCase } from "../../../src/domain/interfaces/use-cases/account/get-accounts-use-case";
-import AccountsRouter from "../../../src/presentation/routers/account-router";
-import server from "../../../src/server";
+import { Account } from "../../../src/v1/domain/models/account";
+import { CreateAccountUseCase } from "../../../src/v1/domain/interfaces/use-cases/account/create-account-use-case";
+import { GetAccountsUseCase } from "../../../src/v1/domain/interfaces/use-cases/account/get-accounts-use-case";
+import AccountsRouter from "../../../src/v1/presentation/routers/account-router";
+import { createServer } from "../../../src/server";
 
 class MockGetAccountsUseCase implements GetAccountsUseCase {
-  execute(accountIds: string[]): Promise<Account[]> {
+  execute(): Promise<Account[]> {
     throw new Error("Method not implemented.");
   }
 }
 
 class MockCreateAccountUseCase implements CreateAccountUseCase {
-  execute(account: Account): Promise<Account> {
+  execute(): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }
 
 describe("Account Router", () => {
+  const server = createServer();
   let mockCreateAccountUseCase: CreateAccountUseCase;
   let mockGetAccountsUseCase: GetAccountsUseCase;
 
@@ -83,11 +84,11 @@ describe("Account Router", () => {
   describe("POST /account", () => {
     test("should return 201 with account data", async () => {
       const inputData = account;
-      const expectedResult = account;
+      const expectedResult = { message: "Created" };
 
       jest
         .spyOn(mockCreateAccountUseCase, "execute")
-        .mockImplementation(() => Promise.resolve(account));
+        .mockImplementation(() => Promise.resolve());
 
       const response = await request(server).post("/account").send(inputData);
 

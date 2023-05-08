@@ -1,6 +1,5 @@
-import { MongoDBAccountDataSource } from "../../../../src/data/data-sources/mongodb/mongodb-account-data-source";
-import { NoSQLDatabaseWrapper } from "../../../../src/data/interfaces/data-sources/nosql-database-wrapper";
-import { ObjectId } from "mongodb";
+import { MongoDBAccountDataSource } from "../../../../src/v1/data/data-sources/mongodb/mongodb-account-data-source";
+import { NoSQLDatabaseWrapper } from "../../../../src/v1/data/interfaces/data-sources/nosql-database-wrapper";
 
 describe("MongoDB DataSource", () => {
   let mockDatabase: NoSQLDatabaseWrapper;
@@ -50,16 +49,14 @@ describe("MongoDB DataSource", () => {
 
   test("create", async () => {
     const inputData = account;
-    const expectedResult = account;
 
     jest
       .spyOn(mockDatabase, "insertOne")
-      .mockImplementation(() => Promise.resolve(account));
+      .mockImplementation(() => Promise.resolve());
 
     const ds = new MongoDBAccountDataSource(mockDatabase);
-    const result = await ds.create(inputData);
+    await ds.create(inputData);
 
     expect(mockDatabase.insertOne).toHaveBeenCalledWith(account);
-    expect(result).toStrictEqual(expectedResult);
   });
 });

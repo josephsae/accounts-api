@@ -1,13 +1,13 @@
-import { Account } from "../../../../src/domain/models/account";
-import { AccountRepository } from "../../../../src/domain/interfaces/repositories/account-repository";
-import { GetAccounts } from "../../../../src/domain/use-cases/account/get-accounts";
+import { Account } from "../../../../src/v1/domain/models/account";
+import { AccountRepository } from "../../../../src/v1/domain/interfaces/repositories/account-repository";
+import { GetAccounts } from "../../../../src/v1/domain/use-cases/account/get-accounts";
 
 describe("Get Accounts Use Case", () => {
   class MockAccountRepository implements AccountRepository {
-    createAccount(account: Account): Promise<Account> {
+    createAccount(): Promise<void> {
       throw new Error("Method not implemented.");
     }
-    getAccounts(accountIds: string[]): Promise<Account[]> {
+    getAccounts(): Promise<Account[]> {
       throw new Error("Method not implemented.");
     }
   }

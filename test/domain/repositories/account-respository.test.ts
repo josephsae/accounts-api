@@ -1,18 +1,18 @@
-import { AccountDataSource } from "../../../src/data/interfaces/data-sources/account-data-source";
-import { Account } from "../../../src/domain/models/account";
-import { AccountRepository } from "../../../src/domain/interfaces/repositories/account-repository";
-import { AccountRepositoryImpl } from "../../../src/domain/repositories/account-respository";
+import { AccountDataSource } from "../../../src/v1/data/interfaces/data-sources/account-data-source";
+import { Account } from "../../../src/v1/domain/models/account";
+import { AccountRepository } from "../../../src/v1/domain/interfaces/repositories/account-repository";
+import { AccountRepositoryImpl } from "../../../src/v1/domain/repositories/account-respository";
 
 class MockAccountDataSource implements AccountDataSource {
-  create(account: Account): Promise<Account> {
+  create(): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getForIds(accountIds: string[]): Promise<Account[]> {
+  getForIds(): Promise<Account[]> {
     throw new Error("Method not implemented.");
   }
 }
 
-describe("Contact Repository", () => {
+describe("Account Repository", () => {
   let mockAccountDataSource: AccountDataSource;
   let accountRepository: AccountRepository;
 
@@ -37,10 +37,10 @@ describe("Contact Repository", () => {
     type: "savings_account",
   };
 
-  describe("getAllContacts", () => {
+  describe("Get Accounts for Ids", () => {
     test("should return data", async () => {
       const inputData = ["1"];
-      const expectedData = [account];
+      const expectedResult = [account];
 
       jest
         .spyOn(mockAccountDataSource, "getForIds")
@@ -48,22 +48,21 @@ describe("Contact Repository", () => {
 
       const result = await accountRepository.getAccounts(inputData);
 
-      expect(result).toStrictEqual(expectedData);
+      expect(result).toStrictEqual(expectedResult);
     });
   });
 
-  describe("createContact", () => {
+  describe("Create Account", () => {
     test("should return true", async () => {
       const inputData = account;
-      const expectedData = account;
+      const expectedResult = account;
 
       jest
         .spyOn(mockAccountDataSource, "create")
-        .mockImplementation(() => Promise.resolve(account));
+        .mockImplementation(() => Promise.resolve());
 
-      const result = await accountRepository.createAccount(inputData);
-
-      expect(result).toStrictEqual(expectedData);
+      await accountRepository.createAccount(inputData);
+      expect(mockAccountDataSource.create).toHaveBeenCalledWith(expectedResult);
     });
   });
 });

@@ -7,9 +7,8 @@ export class MongoDBAccountDataSource implements AccountDataSource {
   constructor(db: NoSQLDatabaseWrapper) {
     this.db = db;
   }
-  async create(account: Account): Promise<Account> {
-    const result = await this.db.insertOne(account);
-    return result;
+  async create(account: Account): Promise<void> {
+    await this.db.insertOne(account);
   }
 
   async getForIds(ids: string[]): Promise<Account[]> {

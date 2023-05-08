@@ -8,9 +8,8 @@ export class AccountRepositoryImpl implements AccountRepository {
     this.accountDataSource = accountDataSource;
   }
 
-  async createAccount(account: Account): Promise<Account> {
-    const result = await this.accountDataSource.create(account);
-    return result;
+  async createAccount(account: Account): Promise<void> {
+    await this.accountDataSource.create(account);
   }
   async getAccounts(accountIds: string[]): Promise<Account[]> {
     const result = await this.accountDataSource.getForIds(accountIds);
